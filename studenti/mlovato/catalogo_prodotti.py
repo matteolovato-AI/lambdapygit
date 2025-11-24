@@ -51,7 +51,7 @@ while scelta != "esci":
         prodotto["categoria"] = input("Inserisci una categoria: ")
 
         prezzo_str: str = input("Prezzo: ")
-        while not (prezzo_str.isnumeric()):
+        while not(prezzo_str.isnumeric()):
             prezzo_str = input("Il prezzo deve essere un numero: ")
         prodotto["prezzo"] = int(prezzo_str)
         catalogo.append(prodotto)
