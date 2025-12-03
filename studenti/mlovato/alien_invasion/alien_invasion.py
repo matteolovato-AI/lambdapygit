@@ -2,6 +2,7 @@ import sys
 
 import pygame
 
+from alien import Alien
 from bullet import Bullet
 from settings import Settings
 from ship import Ship
@@ -31,6 +32,8 @@ class AlienInvasion:
         self.ship = Ship(self)
         # group of bullets, like a list
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+        self._create_fleet()
 
     def run_game(self):
         """
@@ -79,12 +82,39 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _create_fleet(self):
+        # create a group of aliens
+        # create a new alien until there no more space
+        # space between aliens is the width of the single alien
+        # create a new alien
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+        current_x, current_y = alien_width, alien_height
+        # append new alien to the group
+        self.aliens.add(alien)
+        while current_y < (self.settings.screen_height - 3 * alien_height):
+            while current_x < (self.settings.screen_width - 2 * alien_width):
+                self._create_alien(current_x, current_y)
+                current_x += 2 * alien_width
+            current_x = alien_width
+            current_y += 2 * alien_height
+
+    def _create_alien(self, x_position, y_position):
+        new_alien = Alien(self)
+        new_alien.x = x_position
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+
+        self.aliens.add(new_alien)
+
     def _update_screen(self):
         # draw the screen every cycle
         _ = self.screen.fill(self.bg_color)
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.ship.blitme()
+        # draw all the group of aliens to the screen
+        self.aliens.draw(self.screen)
         # update screen
         pygame.display.flip()
 
