@@ -37,15 +37,10 @@ class AlienInvasion:
         Start the game"""
         while True:
             self._check_events()
-            # calling update on a group will call update for every element of the group
-            self.bullets.update()
+
             self._update_screen()
             self.ship.update()
-            # delete bullets out of screen
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-                    print(len(self.bullets))
+            self._update_bullets()
             # clock for fps so the game will run at the same speed on every
             # machine
             _ = self.clock.tick(60)
@@ -79,8 +74,10 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         # create a new bullet and add to the group
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        # limited to #bullets_allowed bullets
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
     def _update_screen(self):
         # draw the screen every cycle
@@ -90,6 +87,14 @@ class AlienInvasion:
         self.ship.blitme()
         # update screen
         pygame.display.flip()
+
+    def _update_bullets(self):
+        # calling update on a group will call update for every element of the group
+        self.bullets.update()
+        # delete bullets out of screen
+        for bullet in self.bullets:
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
 
 if __name__ == "__main__":
