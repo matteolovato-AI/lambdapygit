@@ -2,6 +2,7 @@ import sys
 
 import pygame
 
+from bullet import Bullet
 from settings import Settings
 from ship import Ship
 
@@ -28,12 +29,16 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
         self.bg_color = self.settings.bg_color
         self.ship = Ship(self)
+        # group of bullets, like a list
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         """
         Start the game"""
         while True:
             self._check_events()
+            # calling update on a group will call update for every element of the group
+            self.bullets.update()
             self._update_screen()
             self.ship.update()
             # clock for fps so the game will run at the same speed on every
@@ -57,6 +62,8 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -65,9 +72,16 @@ class AlienInvasion:
             self.ship.moving_left = False
         pass
 
+    def _fire_bullet(self):
+        # create a new bullet and add to the group
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+
     def _update_screen(self):
         # draw the screen every cycle
         _ = self.screen.fill(self.bg_color)
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         self.ship.blitme()
         # update screen
         pygame.display.flip()

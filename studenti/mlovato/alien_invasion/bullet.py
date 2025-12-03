@@ -25,6 +25,6 @@ class Bullet(Sprite):
         # update real bullet's position
         self.rect.y = self.y
 
-    def draw(self):
+    def draw_bullet(self):
         # draw the actual bullet
         pygame.draw.rect(self.screen, self.color, self.rect)
