@@ -41,6 +41,11 @@ class AlienInvasion:
             self.bullets.update()
             self._update_screen()
             self.ship.update()
+            # delete bullets out of screen
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+                    print(len(self.bullets))
             # clock for fps so the game will run at the same speed on every
             # machine
             _ = self.clock.tick(60)
