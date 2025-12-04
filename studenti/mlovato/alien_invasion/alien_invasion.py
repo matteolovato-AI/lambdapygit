@@ -136,6 +136,11 @@ class AlienInvasion:
         # collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         # for super power bullet pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         _ = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        # if there are no more aliens
+        if not self.aliens:
+            # destroy all active bullets and create a new group of aliens
+            self.bullets.empty()
+            self._create_fleet()
 
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():
