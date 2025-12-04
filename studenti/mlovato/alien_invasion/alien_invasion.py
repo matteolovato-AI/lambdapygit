@@ -131,6 +131,11 @@ class AlienInvasion:
         for bullet in self.bullets:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        # check if bullets hit any alien
+        # if do, delete both alien and bullet
+        # collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        # for super power bullet pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        _ = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():
