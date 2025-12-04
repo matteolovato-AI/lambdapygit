@@ -14,3 +14,10 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color = (230, 60, 60)
         self.bullets_allowed = 3
+        # alien settings
+        self.alien_speed = 1.0
+        # speed which aliens drop when they hit the border
+        self.fleet_drop_speed = 10
+        # fleet_direction 1 is equal to right
+        # fleet_direction -1 is equal to left
+        self.fleet_direction = 1

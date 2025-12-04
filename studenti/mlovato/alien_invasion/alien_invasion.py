@@ -44,6 +44,7 @@ class AlienInvasion:
             self._update_screen()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             # clock for fps so the game will run at the same speed on every
             # machine
             _ = self.clock.tick(60)
@@ -107,6 +108,11 @@ class AlienInvasion:
 
         self.aliens.add(new_alien)
 
+    def _update_aliens(self):
+        # update aliens' position
+        self._check_fleet_edges()
+        self.aliens.update()
+
     def _update_screen(self):
         # draw the screen every cycle
         _ = self.screen.fill(self.bg_color)
@@ -125,6 +131,18 @@ class AlienInvasion:
         for bullet in self.bullets:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+    def _check_fleet_edges(self):
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        # lower aliens when they hit the border and change direction
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
 
 if __name__ == "__main__":
