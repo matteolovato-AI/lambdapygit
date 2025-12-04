@@ -5,6 +5,7 @@ import pygame
 
 from alien import Alien
 from bullet import Bullet
+from button import Button
 from game_stats import GameStats
 from settings import Settings
 from ship import Ship
@@ -39,7 +40,10 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
         # start alien invasion only when flag is true
-        self.game_active = True
+        # alien_invasion starts when hit play
+        self.game_active = False
+        # create play button
+        self.play_button = Button(self, "Play")
 
     def run_game(self):
         """
@@ -65,6 +69,9 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
 
     def _check_keydown_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -81,7 +88,20 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
-        pass
+
+    def _check_play_button(self, mouse_pos):
+        # start new game when mouse click play button
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.game_active:
+            # reset game stats so game can be playied again
+            self.stats.reset_stats()
+            self.game_active = True
+            # delete bullets and aliens
+            self.bullets.empty()
+            self.aliens.empty()
+            # create new aliens' group and center ship
+            self._create_fleet()
+            self.ship.center_ship()
 
     def _fire_bullet(self):
         # create a new bullet and add to the group
@@ -157,6 +177,11 @@ class AlienInvasion:
         self.ship.blitme()
         # draw all the group of aliens to the screen
         self.aliens.draw(self.screen)
+
+        # draw button if screen inactive
+        if not self.game_active:
+            self.play_button.draw_button()
+
         # update screen
         pygame.display.flip()
 
