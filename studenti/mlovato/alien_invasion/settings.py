@@ -22,3 +22,20 @@ class Settings:
         # fleet_direction 1 is equal to right
         # fleet_direction -1 is equal to left
         self.fleet_direction = 1
+
+        """Dynamic settings"""
+        self.speedup_scale = 1.1
+        self.initialize_dynamic_settings()
+
+    def initialize_dynamic_settings(self):
+        self.ship_speed = 1.5
+        self.bullet_speed = 2.5
+        self.alien_speed = 1.0
+        # fleet direction
+        self.fleet_direction = 1
+
+    def increase_speed(self):
+        # faster game
+        self.ship_speed *= self.speedup_scale
+        self.bullet_speed *= self.speedup_scale
+        self.alien_speed *= self.speedup_scale
