@@ -7,7 +7,7 @@ class RandomWalk:
         self.num_points=num_points
         # tutte le passeggiate iniziano a (0,0)
         self.x_value = [0]
-        self.y_valye = [0]
+        self.y_value = [0]
     
     def fill_walk(self):
         """
@@ -31,7 +31,7 @@ class RandomWalk:
             # calcola la nuova posizione
             # ultima posizione conosciuta + lo step appena calcolato
             x = self.x_value[-1] + x_step
-            y = self.y_valye[-1] + y_step
+            y = self.y_value[-1] + y_step
             # aggiunge alla lista
             self.x_value.append(x)
-            self.y_valye.append(y)
+            self.y_value.append(y)
